@@ -18,6 +18,9 @@ import './app.scss'
 const dvaApp = dva.createApp({
   initialState: {},
   models: models,
+  onError(error) {
+    console.log('error', error)
+  }
 });
 const store = dvaApp.getStore();
 

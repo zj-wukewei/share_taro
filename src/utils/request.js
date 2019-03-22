@@ -1,25 +1,32 @@
 import Taro from '@tarojs/taro'
 
-const baseUrl = "http://10.168.30.132:8080/"
+const baseUrl = "http://192.168.1.117:8080/"
 
-function getStorage(key) {
+export const getStorage = (key) => {
     return Taro.getStorage({ key }).then(res => res.data).catch(() => '')
 }
 
+export const updateStorage = (data = {}) => {
+    return Promise.all([
+        Taro.setStorage({ key: 'token', data: data['token'] || '' }),
+        Taro.setStorage({ key: 'uid', data: data['uid'] || '' })
+    ])
+}
+
+
 function checkStatus(response) {
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      return response;
+        return response;
     }
-  
+
     const error = new Error(response.statusText);
     error.response = response;
     throw error;
-  }
-  
+}
+
 
 export default async function fetch(options) {
     const { url, payload, method = 'GET', showToast = true } = options
-    console.log("options", options)
     const token = await getStorage('token')
     let header = {
         "APP-ID": 4,
@@ -39,23 +46,27 @@ export default async function fetch(options) {
         data: payload,
         mode: 'cors',
         header
-    }).then(res => {
-        checkStatus(res)
-        const { code, data, msg } = res.data
-        if (code !== 0) {
-            if (showToast) {
-                Taro.showToast({
-                    title: msg,
-                    icon: 'none'
-                })
-                return Promise.reject(msg)
-            } else {
-                return res.data
-            }
-        }
-        return data
-    }).catch(err => {
-        console.log('err', err)
-        return Promise.reject(err && err.errorMsg || "网络请求出差")
     })
+        .then(checkStatus)
+        .then(res => {
+            const { code, data, msg } = res.data
+            if (code !== 0) {
+                if (showToast) {
+                    Taro.showToast({
+                        title: msg,
+                        icon: 'none'
+                    })
+                }
+                if (code == -1001) {
+                    //跳转到登录页面
+                    Taro.navigateTo({
+                        url: '/pages/login/index'
+                    })
+                }
+                throw new Error(msg)
+            }
+            return data
+        }).catch(err => {
+            throw new Error(err && err.errMsg || "服务器正在维护中!")
+        })
 }

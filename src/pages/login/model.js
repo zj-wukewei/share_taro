@@ -1,6 +1,6 @@
 import Taro from '@tarojs/taro';
-import {login} from './service';
-
+import { login } from './service';
+import { updateStorage } from "../../utils/request"
 
 export default {
     namespace: 'login',
@@ -8,11 +8,9 @@ export default {
 
     },
     effects: {
-        *login({payload: {mobile, password}}, { call, put, select }) {
-            const res = yield call(login, { mobile, password });
-            console.log("login11", res)
-
-         
+        *login({ payload: { mobile, password } }, { call, put, select }) {
+            const data = yield call(login, { mobile, password });
+            updateStorage(data);
         }
     },
     reducers: {
