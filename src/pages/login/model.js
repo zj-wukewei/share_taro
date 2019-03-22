@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro';
-import * as login from './service';
+import {login} from './service';
 
 
 export default {
@@ -8,10 +8,11 @@ export default {
 
     },
     effects: {
-        *login(action, { call, put, select }) {
-            const { mobile, password } = action.payload;
-            const res = yield call(login.login, { mobile, password });
-            console.log("login", res)
+        *login({payload: {mobile, password}}, { call, put, select }) {
+            const res = yield call(login, { mobile, password });
+            console.log("login11", res)
+
+         
         }
     },
     reducers: {

@@ -1,10 +1,21 @@
 import Taro from '@tarojs/taro'
 
-const baseUrl = "http://192.168.1.117:8080/"
+const baseUrl = "http://10.168.30.132:8080/"
 
 function getStorage(key) {
     return Taro.getStorage({ key }).then(res => res.data).catch(() => '')
 }
+
+function checkStatus(response) {
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return response;
+    }
+  
+    const error = new Error(response.statusText);
+    error.response = response;
+    throw error;
+  }
+  
 
 export default async function fetch(options) {
     const { url, payload, method = 'GET', showToast = true } = options
@@ -29,21 +40,22 @@ export default async function fetch(options) {
         mode: 'cors',
         header
     }).then(res => {
-        const { statusCode, data } = res
-        if (statusCode !== 200 && showToast) {
-            Taro.showToast({
-                title: "网络请求出差",
-                icon: 'none'
-            })
+        checkStatus(res)
+        const { code, data, msg } = res.data
+        if (code !== 0) {
+            if (showToast) {
+                Taro.showToast({
+                    title: msg,
+                    icon: 'none'
+                })
+                return Promise.reject(msg)
+            } else {
+                return res.data
+            }
         }
         return data
     }).catch(err => {
-        console.log('网络请求出差', err)
-        if (showToast) {
-            Taro.showToast({
-                title: err && err.errorMsg || "网络请求出差",
-                icon: 'none'
-            })
-        }
+        console.log('err', err)
+        return Promise.reject(err && err.errorMsg || "网络请求出差")
     })
 }
