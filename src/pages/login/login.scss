@@ -1,0 +1,17 @@
+.login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    padding-left: 120px;
+    padding-right: 120px;
+    .app-name {
+        margin-top: 180px;
+        font-size: 68px;
+    }
+    .submit {
+        margin-top: 64px;
+        background: #000000;
+        color: #fff;
+    }
+}

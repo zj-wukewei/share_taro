@@ -1,0 +1,29 @@
+$height: 72px;
+.core-input-item {
+    position: relative;
+    border: 0 solid #000000;
+    border-bottom-width: 1px;
+    width: 100%;
+    .core-input {
+        height: $height;
+        color: #000000;
+        font-size: 24px;
+    }
+}
+
+.core-input-item-clear {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    width: 42px;
+    height: $height;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    &-img {
+        width: 30px;
+        height: 30px;
+    }
+}
