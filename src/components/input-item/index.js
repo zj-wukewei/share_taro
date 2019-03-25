@@ -12,6 +12,7 @@ class Index extends Component {
     compStyle: '',
     focus: false,
     password: false,
+    canShowClear: true,
     onInput: () => { },
     onFocus: () => { },
     onBlur: () => { }
@@ -26,7 +27,7 @@ class Index extends Component {
   }
 
   render() {
-    const { value, type, focus, password, placeholder, compStyle,
+    const { value, type, focus, password, placeholder, compStyle, canShowClear,
       onFocus, onBlur } = this.props
     return (
       <View className='core-input-item' style={compStyle}>
@@ -41,7 +42,7 @@ class Index extends Component {
           onBlur={onBlur}
         />
         {
-          !!value && (
+          !!value && canShowClear && (
             <View className='core-input-item-clear' onClick={this.handleClear}>
               <Image className='core-input-item-clear-img' src={iconClose} />
             </View>

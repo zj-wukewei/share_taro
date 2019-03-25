@@ -4,11 +4,11 @@ import { Provider } from '@tarojs/redux'
 
 import Login from './pages/login/index'
 
-import dva from './utils/dva';
-import models from './models';
+import dva from './utils/dva'
+import models from './models'
 
 import './app.scss'
-
+import './style/custom-theme.scss'
 // 如果需要在 h5 环境中开启 React Devtools
 // 取消以下注释：
 // if (process.env.NODE_ENV !== 'production' && process.env.TARO_ENV === 'h5')  {
@@ -28,7 +28,7 @@ class App extends Component {
 
   config = {
     pages: [
-      'pages/login'
+      'pages/login/index'
     ],
     window: {
       backgroundTextStyle: 'light',

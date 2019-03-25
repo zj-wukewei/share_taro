@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Button, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-
+import { AtButton } from 'taro-ui'
 import InputItem from '../../components/input-item'
 import './login.scss'
 
@@ -36,13 +36,15 @@ class Index extends Component {
     return (
       <View className='login'>
         <Text className='app-name'>Share</Text>
-        <InputItem type='text'
+        <InputItem 
+          type='text'
+          compStyle={{ marginTop: '40px' }}
           placeholder='手机号码'
           value={mobile}
           onInput={this.handleInput.bind(this, 'mobile')}
         />
         <InputItem compStyle={{ marginTop: '10px' }} type='password' placeholder='密码' />
-        <Button className='submit' onClick={this.handleLogin}>登录</Button>
+        <AtButton className='submit' type='primary'  onClick={this.handleLogin}>登录</AtButton>
       </View>
     )
   }
