@@ -10,6 +10,7 @@ export default {
     effects: {
         *login({ payload: { mobile, password } }, { call, put, select }) {
             const data = yield call(login, { mobile, password });
+            console.log('login', data)
             updateStorage(data);
         }
     },
